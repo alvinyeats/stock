@@ -30,13 +30,18 @@ def get_one_page(i):
 
 def write_to_db(tbl):
     data = json.loads(tbl)
+    today = datetime.date.today()
+    if today.weekday() >= 5:
+        dd = today.weekday() - 4
+        today = today - datetime.timedelta(days=dd)
+
     for sd in data['data']:
         try:
             sd = sd.split(',')
             stock = AShare.objects.get(no=sd[1])
             AShareDaily.objects.create(
                 stock=stock,
-                today=datetime.datetime.strptime('2019-05-17', "%Y-%m-%d"),
+                today=today,
                 price_open=sd[12],
                 price_close=sd[13],
                 price_upper=sd[10],
