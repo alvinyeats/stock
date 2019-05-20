@@ -5,6 +5,7 @@ from django.db import models
 class AShare(models.Model):
     no = models.CharField('股票代码', max_length=6, unique=True)
     abbr = models.CharField('股票简称', max_length=200)
+    industry = models.CharField('行业分类', max_length=200, default='')
 
     def __str__(self):
         return self.no

@@ -28,7 +28,7 @@ def parse_one_page(html):
     tbl = pd.read_html(content.prettify(), header=0)[0]
     # prettify()优化代码,[0]从pd.read_html返回的list中提取出DataFrame
 
-    tbl.rename(columns={'股票代码':'no', '股票简称':'abbr', '公司名称':'company_name', '省份':'province', '城市':'city', '主营业务收入(201712)':'main_bussiness_income', '净利润(201712)':'net_profit', '员工人数':'employees', '上市日期':'listing_date', '招股书':'zhaogushu', '公司财报':'financial_report', '行业分类':'industry_classification', '产品类型':'industry_type', '主营业务':'main_business'},inplace = True)
+    tbl.rename(columns={'股票代码':'no', '股票简称':'abbr', '公司名称':'company_name', '省份':'province', '城市':'city', '主营业务收入(201712)':'main_bussiness_income', '净利润(201712)':'net_profit', '员工人数':'employees', '上市日期':'listing_date', '招股书':'zhaogushu', '公司财报':'financial_report', '行业分类':'industry', '产品类型':'industry_type', '主营业务':'main_business'},inplace = True)
 
     print(tbl.no)
     return tbl
@@ -41,7 +41,8 @@ def write_to_db(tbl):
         try:
             AShare.objects.create(
                 no=str(stock.no).zfill(6),
-                abbr=stock.abbr
+                abbr=stock.abbr,
+                industry=stock.industry,
             )
             print('saving {}'.format(stock.no))
         except:
